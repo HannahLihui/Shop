@@ -27,7 +27,7 @@ import com.hui.exception.RepeatKillException;
 import com.hui.exception.SeckillCloseException;
 import com.hui.exception.SeckillException;
 import com.hui.cache.*;;
-@Service
+@Service(value="seckillService")
 public class SeckillServiceImpl implements SeckillService {
 	  private Logger logger = LoggerFactory.getLogger(this.getClass());
 	    /* 加入一个盐值,用于混淆*/

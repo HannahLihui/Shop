@@ -12,13 +12,14 @@
 
     <!--开启自动扫描带web注解的类-->
     <context:component-scan base-package="com.hui.controller"/>
-
+  
     <!--开启基于注解的开发-->
     <!--自动注册DefaultAnnotationHandlerMapping,AnnotationMethoderAdapter-->
     <mvc:annotation-driven/>
     <!--开启对静态资源的过滤-->
       <mvc:default-servlet-handler/>
     <!--配置视图解析-->
+   
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="prefix" value="/WEB-INF/jsp/"/>

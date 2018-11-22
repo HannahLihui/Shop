@@ -7,6 +7,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,19 +27,25 @@ import com.hui.dto.*;
 
 import com.hui.entity.Seckill;
 import com.hui.entity.Time;
+import com.hui.entity.User;
 import com.hui.enums.SeckillStatEnum;
 import com.hui.exception.RepeatKillException;
 import com.hui.exception.SeckillCloseException;
 import com.hui.exception.SeckillException;
 import com.hui.service.SeckillService;
+import com.hui.service.UserService;
 @Controller
 public class SeckillController {
 	 private final SeckillService seckillService;
-
+	 private final UserService userService;
 	    @Autowired
-	    public SeckillController(SeckillService seckillService) {
+	    public SeckillController(SeckillService seckillService,UserService userService) {
 	        this.seckillService = seckillService;
+	      this.userService=userService;
 	    }
+	    
+	   
+
 
 	    /**
 	     * 进入秒杀列表.
@@ -41,6 +53,34 @@ public class SeckillController {
 	     * @param model 模型数据,里面放置有秒杀商品的信息
 	     * @return 秒杀列表详情页面
 	     */
+	   
+	    @RequestMapping("/check")
+	    public String check(HttpSession session){
+
+	        Subject subject=(Subject)session.getAttribute("user");
+
+	        User user=(User)subject.getPrincipal();
+	        System.out.println(user.toString());
+	        return "permission";
+	    }
+
+	    @RequestMapping("/readName")
+	    public String readName(HttpSession session){
+
+	        return "name";
+	    }
+
+	    @RequestMapping("/readData")
+	    public String readData(){
+
+	        return "data";
+	    }
+
+
+	    @RequestMapping("/nopermission")
+	    public String noPermission(){
+	        return "error";
+	    }
 	
 	    @RequestMapping(value = "/list", method = RequestMethod.GET)
 	    public String list(Model model) {
