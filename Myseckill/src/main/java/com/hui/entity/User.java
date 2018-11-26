@@ -1,12 +1,17 @@
 package com.hui.entity;
 
+import java.io.Serializable;
+
 import org.springframework.stereotype.Component;
 
 @Component
-public class User {
+public class User implements Serializable{
 	 private int id;
 	    private String account;
 	    private String password;
+	    public User() {
+	        super();
+	    }
 	    public User(int id, String account, String password) {
 	        this.id = id;
 	        this.account = account;
@@ -30,4 +35,12 @@ public class User {
 		public void setPassword(String password) {
 			this.password = password;
 		}
+		
+		    public String toString() {
+		        return "UserPojo{" +
+		                "id=" + id +
+		                ", account='" + account + '\'' +
+		                ", password='" + password + '\'' +
+		                '}';
+		    }
 }

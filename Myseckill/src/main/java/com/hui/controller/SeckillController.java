@@ -1,15 +1,15 @@
 package com.hui.controller;
 
-import java.sql.Timestamp;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -26,7 +26,6 @@ import com.hui.dao.SeckillResult;
 import com.hui.dto.*;
 
 import com.hui.entity.Seckill;
-import com.hui.entity.Time;
 import com.hui.entity.User;
 import com.hui.enums.SeckillStatEnum;
 import com.hui.exception.RepeatKillException;
@@ -43,15 +42,46 @@ public class SeckillController {
 	        this.seckillService = seckillService;
 	      this.userService=userService;
 	    }
-	    
+	    @RequestMapping(value = "/login")
+	    public String Login(String username, String password, HttpSession session, Model model){
+	        if(username==null){
+	            model.addAttribute("message", "æŸ¥çœ‹é¡µé¢");
+	            return "login";
+	        }
+	        Subject subject = SecurityUtils.getSubject();
+	        UsernamePasswordToken token=new UsernamePasswordToken(username,password);
+	     
+	        subject.login(token);
+	        User user;
+	        try {
+	            subject.login(token);
+	            user = (User)subject.getPrincipal();
+	            System.out.println(user.toString());
+	            session.setAttribute("user",subject);
+	            model.addAttribute("message", "ä¿¡æ¯");
+	        } catch (UnknownAccountException e) {
+	        	 System.out.println( "ç™»é™†å‡ºé”™");
+	            model.addAttribute("message", "ç™»é™†å‡ºé”™");
+	            return "index";
+	        }catch (IncorrectCredentialsException ex) {
+	        	 System.out.println( "ç”¨æˆ·åå’Œå¯†ç ä¸åŒ¹é…");
+	        	return "index";
+	        }catch (AuthenticationException e) {
+	        	 System.out.println( "å…¶ä»–çš„ç™»é™†é”™è¯¯");
+		        	return "index";
+	        	
+	        }
+
+	        return "test";
+	    }
 	   
 
 
 	    /**
-	     * ½øÈëÃëÉ±ÁĞ±í.
+	     * è¿›å…¥ç§’æ€åˆ—è¡¨.
 	     *
-	     * @param model Ä£ĞÍÊı¾İ,ÀïÃæ·ÅÖÃÓĞÃëÉ±ÉÌÆ·µÄĞÅÏ¢
-	     * @return ÃëÉ±ÁĞ±íÏêÇéÒ³Ãæ
+	     * @param model æ¨¡å‹æ•°æ®,é‡Œé¢æ”¾ç½®æœ‰ç§’æ€å•†å“çš„ä¿¡æ¯
+	     * @return ç§’æ€åˆ—è¡¨è¯¦æƒ…é¡µé¢
 	     */
 	   
 	    @RequestMapping("/check")
@@ -115,15 +145,15 @@ public class SeckillController {
 	    }
 
 	    /**
-	     * ±©Â¶ÃëÉ±½Ó¿ÚµÄ·½·¨.
+	     * æš´éœ²ç§’æ€æ¥å£çš„æ–¹æ³•.
 	     *
-	     * @param seckillId ÃëÉ±ÉÌÆ·µÄid
-	     * @return ¸ù¾İÓÃ»§ÃëÉ±µÄÉÌÆ·id½øĞĞÒµÎñÂß¼­ÅĞ¶Ï,·µ»Ø²»Í¬µÄjsonÊµÌå½á¹û
+	     * @param seckillId ç§’æ€å•†å“çš„id
+	     * @return æ ¹æ®ç”¨æˆ·ç§’æ€çš„å•†å“idè¿›è¡Œä¸šåŠ¡é€»è¾‘åˆ¤æ–­,è¿”å›ä¸åŒçš„jsonå®ä½“ç»“æœ
 	     */
 	    @RequestMapping(value = "/{seckillId}/exposer", method = RequestMethod.GET)
 	    @ResponseBody
 	    public SeckillResult<Exposer> exposer(@PathVariable("seckillId") Long seckillId) {
-	        // ²éÑ¯ÃëÉ±ÉÌÆ·µÄ½á¹û
+	        // æŸ¥è¯¢ç§’æ€å•†å“çš„ç»“æœ
 	    	
 	        SeckillResult<Exposer> result;
 	        try {
@@ -137,47 +167,47 @@ public class SeckillController {
 	    }
 
 	    /**
-	     * ÓÃ»§Ö´ĞĞÃëÉ±,ÔÚÒ³Ãæµã»÷ÏàÓ¦µÄÃëÉ±Á¬½Ó,½øÈëºó»ñÈ¡¶ÔÓ¦µÄ²ÎÊı½øĞĞÅĞ¶Ï,·µ»ØÏà¶ÔÓ¦µÄjsonÊµÌå½á¹û,Ç°¶ËÔÙ½øĞĞ´¦Àí.
+	     * ç”¨æˆ·æ‰§è¡Œç§’æ€,åœ¨é¡µé¢ç‚¹å‡»ç›¸åº”çš„ç§’æ€è¿æ¥,è¿›å…¥åè·å–å¯¹åº”çš„å‚æ•°è¿›è¡Œåˆ¤æ–­,è¿”å›ç›¸å¯¹åº”çš„jsonå®ä½“ç»“æœ,å‰ç«¯å†è¿›è¡Œå¤„ç†.
 	     *
-	     * @param seckillId ÃëÉ±µÄÉÌÆ·,¶ÔÓ¦µÄÊ±ÃëÉ±µÄid
-	     * @param md5       Ò»¸ö±»»ìÏıµÄmd5¼ÓÃÜÖµ
-	     * @param userPhone ²ÎÓëÃëÉ±ÓÃ»§µÄ¶îÊÖ»úºÅÂë,µ±×öÕËºÅÃÜÂëÊ¹ÓÃ
-	     * @return ²ÎÓëÃëÉ±µÄ½á¹û,ÎªjsonÊı¾İ
+	     * @param seckillId ç§’æ€çš„å•†å“,å¯¹åº”çš„æ—¶ç§’æ€çš„id
+	     * @param md5       ä¸€ä¸ªè¢«æ··æ·†çš„md5åŠ å¯†å€¼
+	     * @param userPhone å‚ä¸ç§’æ€ç”¨æˆ·çš„é¢æ‰‹æœºå·ç ,å½“åšè´¦å·å¯†ç ä½¿ç”¨
+	     * @return å‚ä¸ç§’æ€çš„ç»“æœ,ä¸ºjsonæ•°æ®
 	     */
 	    @RequestMapping(value = "/{seckillId}/{md5}/execution", method = RequestMethod.POST)
 	    @ResponseBody
 	    public SeckillResult<SeckillExecution> execute(@PathVariable("seckillId") long seckillId,
 	                                                   @PathVariable("md5") String md5,
 	                                                   @CookieValue(value = "userPhone", required = false) Long userPhone) {
-	        // Èç¹ûÓÃ»§µÄÊÖ»úºÅÂëÎª¿ÕµÄËµÃ÷Ã»ÓĞÌîĞ´ÊÖ»úºÅÂë½øĞĞÃëÉ±
+	        // å¦‚æœç”¨æˆ·çš„æ‰‹æœºå·ç ä¸ºç©ºçš„è¯´æ˜æ²¡æœ‰å¡«å†™æ‰‹æœºå·ç è¿›è¡Œç§’æ€
 	        if (userPhone == null) {
-	            return new SeckillResult<SeckillExecution>(false, "Ã»ÓĞ×¢²á");
+	            return new SeckillResult<SeckillExecution>(false, "æ²¡æœ‰æ³¨å†Œ");
 	        }
-	        // ¸ù¾İÓÃ»§µÄÊÖ»úºÅÂë,ÃëÉ±ÉÌÆ·µÄid¸úmd5½øĞĞÃëÉ±ÉÌÆ·,Ã»Òì³£¾ÍÊÇÃëÉ±³É¹¦
+	        // æ ¹æ®ç”¨æˆ·çš„æ‰‹æœºå·ç ,ç§’æ€å•†å“çš„idè·Ÿmd5è¿›è¡Œç§’æ€å•†å“,æ²¡å¼‚å¸¸å°±æ˜¯ç§’æ€æˆåŠŸ
 	        try {
-	            // ÕâÀï»»³É´¢´æ¹ı³Ì
+	            // è¿™é‡Œæ¢æˆå‚¨å­˜è¿‡ç¨‹
 	 SeckillExecution execution = seckillService.executeSeckill(seckillId, userPhone, md5);
 	            return new SeckillResult<SeckillExecution>(true, execution);
 	        } catch (RepeatKillException e1) {
-	            // ÖØ¸´ÃëÉ±
+	            // é‡å¤ç§’æ€
 	            SeckillExecution execution = new SeckillExecution(seckillId, SeckillStatEnum.REPEAT_KILL);
 	            return new SeckillResult<SeckillExecution>(false, execution);
 	        } catch (SeckillCloseException e2) {
-	            // ÃëÉ±¹Ø±Õ
+	            // ç§’æ€å…³é—­
 	            SeckillExecution execution = new SeckillExecution(seckillId, SeckillStatEnum.END);
 	            return new SeckillResult<SeckillExecution>(false, execution);
 	        } catch (SeckillException e) {
-	            // ²»ÄÜÅĞ¶ÏµÄÒì³£
+	            // ä¸èƒ½åˆ¤æ–­çš„å¼‚å¸¸
 	            SeckillExecution execution = new SeckillExecution(seckillId, SeckillStatEnum.INNER_ERROR);
 	            return new SeckillResult<SeckillExecution>(false, execution);
 	        }
-	        // Èç¹ûÓĞÒì³£¾ÍÊÇÃëÉ±Ê§°Ü
+	        // å¦‚æœæœ‰å¼‚å¸¸å°±æ˜¯ç§’æ€å¤±è´¥
 	    }
 
 	    /**
-	     * »ñÈ¡·şÎñÆ÷¶ËÊ±¼ä,·ÀÖ¹ÓÃ»§´Û¸Ä¿Í»§¶ËÊ±¼äÌáÇ°²ÎÓëÃëÉ±
+	     * è·å–æœåŠ¡å™¨ç«¯æ—¶é—´,é˜²æ­¢ç”¨æˆ·ç¯¡æ”¹å®¢æˆ·ç«¯æ—¶é—´æå‰å‚ä¸ç§’æ€
 	     *
-	     * @return Ê±¼äµÄjsonÊı¾İ
+	     * @return æ—¶é—´çš„jsonæ•°æ®
 	     */
 	    @RequestMapping(value = "/time/now", method = RequestMethod.GET)
 	    @ResponseBody

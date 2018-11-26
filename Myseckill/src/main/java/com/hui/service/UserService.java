@@ -1,6 +1,7 @@
 package com.hui.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.hui.entity.Permission;
 import com.hui.entity.User;
@@ -19,5 +20,7 @@ public interface UserService {
      * @param user
      * @return List
      */
-    List<Permission> getPermissionsByUser(User user);
+    Permission getPermissionsByUser(User user);
+    
+   
 }

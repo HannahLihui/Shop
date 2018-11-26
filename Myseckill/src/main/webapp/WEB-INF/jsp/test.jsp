@@ -13,6 +13,8 @@
 <body>
 ${message}
 
-<a href="check">查看</a>
+<a href="check">商家端</a>
+<a href="/Myseckill/index">管理页面查看信息</a>
+<a href="/Myseckill/list">进入秒杀列表</a>
 </body>
 </html>
