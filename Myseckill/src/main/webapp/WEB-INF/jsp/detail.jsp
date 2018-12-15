@@ -18,9 +18,9 @@
 <meta charset="utf-8">
    <%-- 引入JQ和Bootstrap --%>
  
-    <link href="/Myseckill/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet">
   
-<link href="/Myseckill/bootstrap-3.3.0/css/bootstrap-theme.css" rel="stylesheet">
+<link href="/bootstrap-3.3.0/css/bootstrap-theme.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
@@ -59,7 +59,7 @@
        <div class="modal-body">
            <div class="row">
                <div class="col-xs-8 col-xs-offset-2">
-                   <input type="text" name="killPhone" id="killPhoneKey" placeholder="填写手机号码"  value="13688385212" class="form-control">
+                   <input type="text" name="killPhone" id="killPhoneKey" placeholder="填写手机号码"   class="form-control">
                </div>
            </div>
        </div>
@@ -75,11 +75,11 @@
 </div>
 </body>
 
-<script src="/Myseckill/bootstrap-3.3.0/jquery.js"></script>
-<script src="/Myseckill/bootstrap-3.3.0/js/bootstrap.min.js"></script>
-<script src="/Myseckill/bootstrap-3.3.0/jquery.cookie.min.js"></script>
-<script src="/Myseckill/bootstrap-3.3.0/jquery.countdown.min.js"></script>
-<script src="/Myseckill/js/seckill.js"></script>
+<script src="/bootstrap-3.3.0/jquery.js"></script>
+<script src="/bootstrap-3.3.0/js/bootstrap.min.js"></script>
+<script src="/bootstrap-3.3.0/jquery.cookie.min.js"></script>
+<script src="/bootstrap-3.3.0/jquery.countdown.min.js"></script>
+<script src="/js/seckill.js"></script>
 <script type="text/javascript">
    $(function () {
        var startTimeVal = "${seckill.startTime} ";

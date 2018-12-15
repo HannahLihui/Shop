@@ -5,14 +5,14 @@ import com.hui.enums.SeckillStatEnum;
 
 public class SeckillExecution {
 	   private long seckillId;
-	    /* Ö´ĞĞÃëÉ±½á¹ûµÄ×´Ì¬   */
+	    /* Ö´ï¿½ï¿½ï¿½ï¿½É±ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬   */
 	    private int state;
-	    /* ×´Ì¬µÄÃ÷ÎÄ±êÊ¾   */
+	    /* ×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½Ê¾   */
 	    private String stateInfo;
-	    /*  µ±ÃëÉ±³É¹¦Ê±,ĞèÒª´«µİÃëÉ±½á¹ûµÄ¶ÔÏó»ØÈ¥  */
+	    /*  ï¿½ï¿½ï¿½ï¿½É±ï¿½É¹ï¿½Ê±,ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É±ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½È¥  */
 	    private SuccessKilled successKilled;
 
-	    /*  ÃëÉ±³É¹¦·µ»ØµÄÊµÌå  */
+	    /*  ï¿½ï¿½É±ï¿½É¹ï¿½ï¿½ï¿½ï¿½Øµï¿½Êµï¿½ï¿½  */
 	    public SeckillExecution(long seckillId, SeckillStatEnum statEnum, SuccessKilled successKilled) {
 	        this.seckillId = seckillId;
 	        this.state = statEnum.getState();
@@ -20,7 +20,7 @@ public class SeckillExecution {
 	        this.successKilled = successKilled;
 	    }
 
-	    /*  ÃëÉ±Ê§°Ü·µ»ØµÄÊµÌå  */
+	    /*  ï¿½ï¿½É±Ê§ï¿½Ü·ï¿½ï¿½Øµï¿½Êµï¿½ï¿½  */
 	    public SeckillExecution(long seckillId, SeckillStatEnum statEnum) {
 	        this.seckillId = seckillId;
 	        this.state = statEnum.getState();
@@ -62,10 +62,10 @@ public class SeckillExecution {
 	    @Override
 	    public String toString() {
 	        return "SeckillExecution{" +
-	                "ÃëÉ±µÄÉÌÆ·ID=" + seckillId +
-	                ", ÃëÉ±×´Ì¬=" + state +
-	                ", ÃëÉ±×´Ì¬ĞÅÏ¢='" + stateInfo + '\'' +
-	                ", ÃëÉ±µÄÉÌÆ·=" + successKilled +
+	                "å•†å“ID=" + seckillId +
+	                ", çŠ¶æ€×´Ì¬=" + state +
+	                ", çŠ¶æ€ä¿¡æ¯='" + stateInfo + '\'' +
+	                ", ç§’æ€æˆåŠŸ=" + successKilled +
 	                '}';
 	    }
 }

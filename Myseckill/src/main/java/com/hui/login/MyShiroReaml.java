@@ -2,6 +2,9 @@ package com.hui.login;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -30,18 +33,22 @@ public class MyShiroReaml extends AuthorizingRealm{
 	        this.userService = userService;
 	    }
 	   
-	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection pc) {
+	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection pc
+			) {
 		  User user=(User)pc.getPrimaryPrincipal();
 	        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 	        //鑾峰彇permission
 	        Permission p=userService.getPermissionsByUser(user);
 	        String role=p.getDescription();
 	        System.out.println(role);
+	        if(role!=null) {
 	        if(role.equals("admin")) {
 	        	info.addRole("admin");
+	        
 	        }
 	        if(role.equals("user")) {
 	        	info.addRole("user");
+	        }
 	        }
 	        info.addRole("all");
 	        return info;

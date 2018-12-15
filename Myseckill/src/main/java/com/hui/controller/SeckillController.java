@@ -36,43 +36,11 @@ import com.hui.service.UserService;
 @Controller
 public class SeckillController {
 	 private final SeckillService seckillService;
-	 private final UserService userService;
+	 
 	    @Autowired
 	    public SeckillController(SeckillService seckillService,UserService userService) {
 	        this.seckillService = seckillService;
-	      this.userService=userService;
-	    }
-	    @RequestMapping(value = "/login")
-	    public String Login(String username, String password, HttpSession session, Model model){
-	        if(username==null){
-	            model.addAttribute("message", "查看页面");
-	            return "login";
-	        }
-	        Subject subject = SecurityUtils.getSubject();
-	        UsernamePasswordToken token=new UsernamePasswordToken(username,password);
 	     
-	        subject.login(token);
-	        User user;
-	        try {
-	            subject.login(token);
-	            user = (User)subject.getPrincipal();
-	            System.out.println(user.toString());
-	            session.setAttribute("user",subject);
-	            model.addAttribute("message", "信息");
-	        } catch (UnknownAccountException e) {
-	        	 System.out.println( "登陆出错");
-	            model.addAttribute("message", "登陆出错");
-	            return "index";
-	        }catch (IncorrectCredentialsException ex) {
-	        	 System.out.println( "用户名和密码不匹配");
-	        	return "index";
-	        }catch (AuthenticationException e) {
-	        	 System.out.println( "其他的登陆错误");
-		        	return "index";
-	        	
-	        }
-
-	        return "test";
 	    }
 	   
 
@@ -94,23 +62,10 @@ public class SeckillController {
 	        return "permission";
 	    }
 
-	    @RequestMapping("/readName")
-	    public String readName(HttpSession session){
-
-	        return "name";
-	    }
-
-	    @RequestMapping("/readData")
-	    public String readData(){
-
-	        return "data";
-	    }
+	  
 
 
-	    @RequestMapping("/nopermission")
-	    public String noPermission(){
-	        return "error";
-	    }
+	   
 	
 	    @RequestMapping(value = "/list", method = RequestMethod.GET)
 	    public String list(Model model) {

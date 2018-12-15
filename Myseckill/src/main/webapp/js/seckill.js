@@ -6,14 +6,14 @@ var seckill = {
    // 封装秒杀相关的ajax的url
    URL: {
        now: function () {
-           return "/Myseckill/time/now";
+           return "/time/now.do";
        },
        exposer: function (seckillId) {
     	   alert(seckillId);
-           return  "/Myseckill/"+seckillId + "/exposer";
+           return  "/"+seckillId + "/exposer.do";
        },
        execution: function (seckillId, md5) {
-           return  "/Myseckill/"+seckillId + "/" + md5 + "/execution";
+           return  "/"+seckillId + "/" + md5 + "/execution.do";
        }
    },
    // 验证手机号码
@@ -45,7 +45,7 @@ var seckill = {
                    if (seckill.validatePhone(inputPhone)) {
                        // 把电话写入cookie
                 	   alert($.cookie('userPhone'));
-                       $.cookie('userPhone', inputPhone, {expires: 7, path: '/Myseckill'});
+                       $.cookie('userPhone', inputPhone, {expires: 7, path: ''});
                        // 验证通过 刷新页面
                        window.location.reload();
                    } else {
@@ -100,8 +100,9 @@ var seckill = {
                            var state = killResult['state'];
                            var stateInfo = killResult['stateInfo'];
                            console.log("秒杀状态" + stateInfo);
+                           alert(stateInfo);
                            // 显示秒杀结果
-                           mode.html('<span class="label label-success">' + stateInfo + '</span>');
+                           mode.html('<span class="label label-success">秒杀信息:' + stateInfo + '</span>');
 
                        });
 

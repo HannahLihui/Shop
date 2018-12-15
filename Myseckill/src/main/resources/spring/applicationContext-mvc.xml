@@ -9,13 +9,14 @@
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-
+      <!-- 开启SpringMVC注解模式 -->
+    <mvc:annotation-driven/>
     <!--开启自动扫描带web注解的类-->
     <context:component-scan base-package="com.hui.controller"/>
   
     <!--开启基于注解的开发-->
     <!--自动注册DefaultAnnotationHandlerMapping,AnnotationMethoderAdapter-->
-    <mvc:annotation-driven/>
+    
     <!--开启对静态资源的过滤-->
       <mvc:default-servlet-handler/>
     <!--配置视图解析-->
@@ -25,4 +26,5 @@
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+   
 </beans>

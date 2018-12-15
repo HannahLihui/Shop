@@ -48,8 +48,8 @@ public class SeckillResult<T> {
 	    public String toString() {
 	        return "SeckillResult{" +
 	                "状态=" + success +
-	                ", 数据=" + data +
-	                ", 错误消息='" + error + '\'' +
+	                ", 鏁版嵁" + data +
+	                ", 閿欒淇℃伅'" + error + '\'' +
 	                '}';
 	    }
 }

@@ -4,17 +4,17 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Exposer {
-	  /*ÊÇ·ñ¿ªÆôÃëÉ± */
+	  /*ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½É± */
 	  private boolean exposed;
-	  /*  ¶ÔÃëÉ±µØÖ·½øĞĞ¼ÓÃÜ´ëÊ©  */
+	  /*  ï¿½ï¿½ï¿½ï¿½É±ï¿½ï¿½Ö·ï¿½ï¿½ï¿½Ğ¼ï¿½ï¿½Ü´ï¿½Ê©  */
 	  private String md5;
-	  /* idÎªseckillIdµÄÉÌÆ·ÃëÉ±µØÖ·   */
+	  /* idÎªseckillIdï¿½ï¿½ï¿½ï¿½Æ·ï¿½ï¿½É±ï¿½ï¿½Ö·   */
 	  private long seckillId;
-	  /* ÏµÍ³µ±Ç°µÄÊ±¼ä   */
+	  /* ÏµÍ³ï¿½ï¿½Ç°ï¿½ï¿½Ê±ï¿½ï¿½   */
 	  private Timestamp now;
-	  /* ÃëÉ±¿ªÆôµÄÊ±¼ä   */
+	  /* ï¿½ï¿½É±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½   */
 	  private Timestamp start;
-	  /*  ÃëÉ±½áÊøµÄÊ±¼ä  */
+	  /*  ï¿½ï¿½É±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½  */
 	  private Timestamp end;
 
 	  public Exposer() {
@@ -90,12 +90,12 @@ public class Exposer {
 	  @Override
 	  public String toString() {
 	      return "Exposer{" +
-	              "ÃëÉ±×´Ì¬=" + exposed +
-	              ", md5¼ÓÃÜÖµ='" + md5 + '\'' +
-	              ", ÃëÉ±ID=" + seckillId +
-	              ", µ±Ç°Ê±¼ä=" + now +
-	              ", ¿ªÊ¼Ê±¼ä=" + start +
-	              ", ½áÊø=" + end +
+	              "ç§’æ€æ¥å£" + exposed +
+	              ", md5æ˜¯='" + md5 + '\'' +
+	              ", å•†å“ID=" + seckillId +
+	              ", å½“å‰æ—¶é—´=" + now +
+	              ", å¼€å¯æ—¶é—´" + start +
+	              ", ç»“æŸæ—¶é—´=" + end +
 	              '}';
 	  }
 }

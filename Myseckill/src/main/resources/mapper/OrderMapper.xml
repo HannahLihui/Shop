@@ -1,0 +1,10 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hui.dao.OrderMapper">
+    <insert id="insertOrder" parameterType="Order">
+        INSERT INTO myorder (itemid, address, message,phone,name,username, delivery,number,price)
+        VALUES (#{itemid}, #{address}, #{message},#{phone},#{name},#{username},${delivery},#{number},#{price})
+    </insert>
+   
+</mapper>

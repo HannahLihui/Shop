@@ -7,7 +7,30 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>Myseckill Maven Webapp</name>
   <url>http://maven.apache.org</url>
+      <build>
+        <finalName>Myseckill</finalName>
+        <plugins>
+           <plugin>
+	<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.2.8.v20150217</version>
+	<configuration>
+					<httpConnector>
+						<port>80</port>
+					</httpConnector>
+					<stopKey>shutdown</stopKey>
+					<stopPort>9966</stopPort>
+				</configuration>
+</plugin>
+        </plugins>
+    </build>
   <dependencies>
+  <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.9</version>
+        </dependency>
+  
   <dependency>
     <groupId>com.github.pagehelper</groupId>
     <artifactId>pagehelper</artifactId>
@@ -116,18 +139,29 @@
           <artifactId>jstl</artifactId>
           <version>1.2</version>
       </dependency>
-      <!--spring默认的json转换-->
+     
       <dependency>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
-          <version>2.8.5</version>
-      </dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.8.7</version>
+        </dependency>
+          <dependency>
+         <groupId>net.sf.json-lib</groupId>
+         <artifactId>json-lib</artifactId>
+         <version>2.4</version>
+         <classifier>jdk15</classifier>
+         </dependency>
       <dependency>
           <groupId>javax.servlet</groupId>
           <artifactId>javax.servlet-api</artifactId>
           <version>3.1.0</version>
       </dependency>
-      
+         <!-- spring-data-solr -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-solr</artifactId>
+            <version>1.5.5.RELEASE</version>
+        </dependency>
       <!--导入spring相关依赖-->
       <dependency>
           <groupId>org.springframework</groupId>
@@ -171,8 +205,39 @@
           <artifactId>spring-test</artifactId>
           <version>4.2.7.RELEASE</version>
       </dependency>
+       <!-- servlet依赖的jar包start -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <!-- servlet依赖的jar包start -->
+        <!-- jsp依赖jar包start -->
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        <!-- jsp依赖jar包end -->
+        <!--jstl标签依赖的jar包start -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <!--jstl标签依赖的jar包end -->
+           <!-- 缓存 -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>1.7.2.RELEASE</version>
+        </dependency>
+
   </dependencies>
-  <build>
-    <finalName>Myseckill</finalName>
-  </build>
+
 </project>

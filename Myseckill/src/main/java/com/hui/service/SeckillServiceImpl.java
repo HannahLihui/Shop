@@ -30,7 +30,7 @@ import com.hui.cache.*;;
 @Service(value="seckillService")
 public class SeckillServiceImpl implements SeckillService {
 	  private Logger logger = LoggerFactory.getLogger(this.getClass());
-	    /* ¼ÓÈëÒ»¸öÑÎÖµ,ÓÃÓÚ»ìÏı*/
+	    /* ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Öµ,ï¿½ï¿½ï¿½Ú»ï¿½ï¿½ï¿½*/
 	    private final String salt = "thisIsASaltValue";
 
 	    @Autowired
@@ -43,31 +43,31 @@ public class SeckillServiceImpl implements SeckillService {
 			return seckillMapper.queryAll(0, 4);
 		}
 		public Seckill getById(long seckillId) {
-		   // System.out.println("ÕâÀï¿ÉÒÔÂğ");
+		   // System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 			// TODO Auto-generated method stub
 			return seckillMapper.queryById(seckillId);
 			
 		}
 		 @Autowired
-		    private RedisDao redisDao=new RedisDao("localhost",6379);
+		    private RedisDao redisDao;
 		public Exposer exportSeckillUrl(long seckillId) {
 		
 			 Seckill seckill = redisDao.getSeckill(seckillId);
-			// System.out.println(seckill);
+			 System.out.println(seckill);
 		        if (seckill == null) {
-		        	// System.out.println("ÊÇ²»ÊÇÎª¿Õ£¿");
-		            // ·ÃÎÊÊı¾İ¿â¶ÁÈ¡Êı¾İ
+		        	// System.out.println("ï¿½Ç²ï¿½ï¿½ï¿½Îªï¿½Õ£ï¿½");
+		            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 		        	 System.out.println(seckillId);
 		            seckill = seckillMapper.queryById(seckillId);
 		            System.out.println(seckill);
 		            if (seckill == null) {
 		                return new Exposer(false, seckillId);
 		            } else {
-		                // ·ÅÈëredis
+		                // ï¿½ï¿½ï¿½ï¿½redis
 		                redisDao.putSeckill(seckill);
 		            }
 		        }
-		       // System.out.println("Ö´ĞĞµ½ÕâÀïÂğ");
+		       // System.out.println("Ö´ï¿½Ğµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 		        
 		       // LocalDateTime dateTime=LocalDateTime.now();
 		        Timestamp startTime = seckill.getStartTime();
@@ -77,7 +77,7 @@ public class SeckillServiceImpl implements SeckillService {
 		        System.out.println(nowTime);
 		        System.out.println(startTime);
 		        if (nowTime.after(startTime) && nowTime.before(endTime)) {
-		            //ÃëÉ±¿ªÆô,·µ»ØÃëÉ±ÉÌÆ·µÄid,ÓÃ¸ø½Ó¿Ú¼ÓÃÜµÄmd5
+		            //ï¿½ï¿½É±ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É±ï¿½ï¿½Æ·ï¿½ï¿½id,ï¿½Ã¸ï¿½ï¿½Ó¿Ú¼ï¿½ï¿½Üµï¿½md5
 		            String md5 = getMd5(seckillId);
 		            return new Exposer(true, md5, seckillId);
 		        }
@@ -94,26 +94,26 @@ public class SeckillServiceImpl implements SeckillService {
 				throws SeckillException, RepeatKillException, SeckillCloseException {
 			// TODO Auto-generated method stub
 			 if (md5 == null || !md5.equals(getMd5(seckillId))) {
-		            logger.error("ÃëÉ±Êı¾İ±»´Û¸Ä");
+		            logger.error("md5æ˜¯ç©º,ç§’æ€æ•°æ®é‡å†™");
 		            throw new SeckillException("seckill data rewrite");
 		        }
-		        // Ö´ĞĞÃëÉ±ÒµÎñÂß¼­
+		        // Ö´ï¿½ï¿½ï¿½ï¿½É±Òµï¿½ï¿½ï¿½ß¼ï¿½
 		      Timestamp nowTime=new Timestamp(System.currentTimeMillis()); 
 
 		        try {
-		            //Ö´ĞĞ¼õ¿â´æ²Ù×÷
+		            //Ö´ï¿½Ğ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		            int reduceNumber = seckillMapper.reduceNumber(seckillId);
 		            if (reduceNumber <= 0) {
-		                logger.warn("Ã»ÓĞ¸üĞÂÊı¾İ¿â¼ÇÂ¼,ËµÃ÷ÃëÉ±½áÊø");
+		                logger.warn("å•†å“å®¢åº“å­˜ä¸è¶³");
 		                throw new SeckillCloseException("seckill is closed");
 		            } else {
-		                // ÕâÀïÖÁÉÙ¼õÉÙµÄÊıÁ¿²»Îª0ÁË,ÃëÉ±³É¹¦ÁË¾ÍÔö¼ÓÒ»¸öÃëÉ±³É¹¦ÏêÏ¸
+		                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¼ï¿½ï¿½Ùµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª0ï¿½ï¿½,ï¿½ï¿½É±ï¿½É¹ï¿½ï¿½Ë¾ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½É±ï¿½É¹ï¿½ï¿½ï¿½Ï¸
 		                int insertCount = successKilledMapper.insertSuccessKilled(seckillId, userPhone);
-		                // ²é¿´ÊÇ·ñ±»ÖØ¸´²åÈë,¼´ÓÃ»§ÊÇ·ñÖØ¸´ÃëÉ±
+		                // ï¿½é¿´ï¿½Ç·ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ç·ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½É±
 		                if (insertCount <= 0) {
 		                    throw new RepeatKillException("seckill repeated");
 		                } else {
-		                    // ÃëÉ±³É¹¦ÁË,·µ»ØÄÇÌõ²åÈë³É¹¦ÃëÉ±µÄĞÅÏ¢
+		                    // ï¿½ï¿½É±ï¿½É¹ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½É±ï¿½ï¿½ï¿½ï¿½Ï¢
 		                    SuccessKilled successKilled = successKilledMapper.queryByIdWithSeckill(seckillId, userPhone);
 		                    return new SeckillExecution(seckillId, SeckillStatEnum.SUCCESS, successKilled);
 		                }
@@ -125,7 +125,7 @@ public class SeckillServiceImpl implements SeckillService {
 		        }
 		        catch (Exception e) {
 		            logger.error(e.getMessage(), e);
-		            // °Ñ±àÒëÆÚÒì³£×ª»»ÎªÔËĞĞÊ±Òì³£
+		            // ï¿½Ñ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£×ªï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½Ê±ï¿½ì³£
 		            throw new SeckillException("seckill inner error : " + e.getMessage());
 		        }
 		}
@@ -144,10 +144,10 @@ public class SeckillServiceImpl implements SeckillService {
 		        map.put("phone", userPhone);
 		        map.put("killTime", killTime);
 		        map.put("result", null);
-		        // Ö´ĞĞ´¢´æ¹ı³Ì,result±»¸´ÖÆ
+		        // Ö´ï¿½Ğ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,resultï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		        try {
 		            seckillMapper.killByProcedure(map);
-		            // »ñÈ¡result
+		            // ï¿½ï¿½È¡result
 		            int result = MapUtils.getInteger(map, "result", -2);
 		            if (result == 1) {
 		                SuccessKilled successKilled = successKilledMapper.queryByIdWithSeckill(seckillId, userPhone);
@@ -163,9 +163,9 @@ public class SeckillServiceImpl implements SeckillService {
 
 
 	    /**
-	     * ²éÑ¯È«²¿µÄÃëÉ±¼ÇÂ¼.
+	     * ï¿½ï¿½Ñ¯È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É±ï¿½ï¿½Â¼.
 	     *
-	     * @return Êı¾İ¿âÖĞËùÓĞµÄÃëÉ±¼ÇÂ¼
+	     * @return ï¿½ï¿½ï¿½İ¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğµï¿½ï¿½ï¿½É±ï¿½ï¿½Â¼
 	     */
 	  
 }

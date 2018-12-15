@@ -5,7 +5,23 @@
          version="3.0"
          metadata-complete="true">
          <!-- spring整合安全框架 -->
-    
+     <welcome-file-list>
+        <welcome-file>/login.html</welcome-file>
+    </welcome-file-list>
+      <!-- 配置spring的字符编码过滤器，保证request请求的中文字符不会乱码（注意这个过滤器要放到最前面） -->
+    <filter>
+        <filter-name>CharacterEncoding</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterEncoding</filter-name>
+        <!-- 设置这个字符编码过滤器作用与每一个请求 -->
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>seckill-dispatchServlet</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -15,6 +31,7 @@
             <param-value>
             classpath:spring/applicationContext-*.xml,
             classpath:spring/shiro-context.xml
+             classpath:spring/spring-*.xml
             
             </param-value>
         </init-param>
@@ -35,7 +52,7 @@
     <servlet-mapping>
         <servlet-name>seckill-dispatchServlet</servlet-name>
         <!--直接拦截所有请求,不再采用spring2.0的/*或者*.do方式-->
-        <url-pattern>/</url-pattern>
+        <url-pattern>*.do</url-pattern>
     </servlet-mapping>
      
 </web-app>

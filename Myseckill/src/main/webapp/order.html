@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="static/element-ui/lib/theme-chalk/index.css"/>
+    <link rel="stylesheet" href="static/font/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="static/css/index.css"/>
+    <link rel="stylesheet" href="static/css/order.css"/>
+</head>
+<body>
+<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+
+<div id="app">
+    <!-- header -->
+    <el-menu mode="horizontal" :default-active="activeIndex">
+        <el-menu-item index="0" id="logo">购物商城</el-menu-item>
+        <el-menu-item index="1"><a href="index.html">首页</a></el-menu-item>
+        <el-menu-item index="2"><a href="goods.html" id="role">商品管理</a></el-menu-item>
+         <el-menu-item id="author" index="4" >
+            <img class="el-tooltip" src="/static/image/menu.png"/>
+            <el-dropdown>
+               <span class="el-dropdown-link">我的订单<i class="el-icon-arrow-down el-icon--right"></i></span>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item>首页</el-dropdown-item>
+                    <el-dropdown-item>
+    <el-popover placement="right" width="400" trigger="click">
+   <el-table :data="order">
+    <el-table-column width="150" property="itemtitle" label="商品"></el-table-column>
+    <el-table-column width="100" property="address" label="地址"></el-table-column>
+    <el-table-column width="100" property="phone" label="电话"></el-table-column>
+      <el-table-column width="100" property="price" label="价格"></el-table-column>
+   </el-table>
+  <label slot="reference">最新订单</label>
+</el-popover>
+                    </el-dropdown-item>
+                    <el-dropdown-item><a href="http://tycoding.cn/" target="_blank">历史订单</a></el-dropdown-item>
+                    <el-dropdown-item divided><a href="/logout">退出</a></el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+        </el-menu-item>
+        <el-menu-item index="3"><a href="/list.do" >进入秒杀系统</a><el-menu-item>
+     
+    </el-menu>
+
+ </div>
+<div id="app-1" style="margin-top: 30px">
+  <div class="sort">
+    <el-row :gutter="20">
+      <el-col :span="20" :offset="2">
+        <el-card class="box-card">
+          <div class="waring">
+            <div>
+
+        <span id="itemtitle" style="height:50px;font-size:25px;color:#bd2c00;text-align: center;  width:150px ; position: relative ;margin-left: 100px " >{{message}}</span>
+         
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+  </div>
+  <div style="margin-top:20px;">
+  
+  <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
+  
+    <el-form-item label="您的名字" prop="name" label-width="200px">
+    <el-col :span="6">
+      <el-input v-model="ruleForm.name" placeholder="输入您的名字"></el-input>
+      </el-col>
+    </el-form-item>
+     <el-form-item label="您的电话" prop="phone" label-width="200px">
+      <el-col :span="6">
+      <el-input v-model="ruleForm.phone"></el-input>
+      </el-col>
+    </el-form-item>
+    <el-form-item label="配送地址" prop="address" label-width="200px">
+      <el-select v-model="ruleForm.address" placeholder="请选择配送地址">
+        <el-option label="地址1：四川成都四川大学江安校区" value="四川成都四川大学江安校区"></el-option>
+        <el-option label="地址2：广西南宁" value="四川成都四川大学江安校区"></el-option>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="准时宝" prop="delivery" label-width="200px">
+      <el-switch v-model="ruleForm.delivery"></el-switch>
+    </el-form-item>
+    <el-form-item label="商品数量" prop="number" label-width="200px">
+		
+    
+     
+      <el-col :span="2">
+      
+      <el-input v-model="ruleForm.number">
+      </el-col>
+      <label class="minute" @click="btn_minute(index)">-</label>
+        <label class="add" @click="btn_add(index)">+</label>
+      
+     
+      </el-input>
+    </el-form-item>
+  
+    <el-form-item label="买家留言" prop="message" label-width="200px">
+     <el-col :span="10">
+      <el-input type="textarea" v-model="ruleForm.message"></el-input>
+      </el-col>
+    </el-form-item>
+    <el-form-item label-width="200px">
+      <el-button style="background-color:	#FF4500" type="primary" @click="submitForm('ruleForm')">立即购买</el-button>
+      <el-button  @click="resetForm('ruleForm')">重置</el-button>
+    </el-form-item>
+  </el-form>
+</div>
+</div>
+
+
+</body>
+<script>
+window.onload=function(){
+
+	 var name,value;
+	   var str=location.href; //取得整个地址栏
+	   var num=str.indexOf("?")
+	   str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
+
+	   var arr=str.split("&"); //各个参数放到数组里
+	    console.log(arr)
+	   for(var i=0;i < arr.length;i++){
+	        num=arr[i].indexOf("=");
+	        if(num>0){
+	             name=arr[i].substring(0,num);
+	             value=arr[i].substr(num+1);
+	             this[name]=value;
+	        }
+	   }
+	    $("#itemid").val(this['id']);
+		  console.log($("#itemid").val);
+	  
+	       var questionnaireName = GetUrlByParamName("itemtitle");
+	        var title=document.getElementById("itemtitle");
+	  
+	   //var price=document.getElementById("price");
+	  // price.innerHTML=this['itemprice']+'元';
+	  
+	   
+	}
+function GetUrlByParamName(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var URL =  decodeURI(window.location.search);
+        var r = URL.substr(1).match(reg);
+        if(r!=null){
+            //decodeURI() 函数可对 encodeURI() 函数编码过的 URI 进行解码
+            return  decodeURI(r[2]);
+        };
+        return null;
+    };
+    //页面加载后立即执行
+
+
+
+
+</script>
+<script type="text/javascript" src="js/juqery-1.8.3.js"></script>
+<script type="text/javascript" src="/static/js/cookie.js"></script>
+<script type="text/javascript" src="static/vue/vue.js"></script>
+<script type="text/javascript" src="static/element-ui/lib/index.js"></script>
+<script type="text/javascript" src="static/vue/vue-resource.js"></script>
+
+<script type="text/javascript" src="static/js/index.js"></script>
+
+<script type="text/javascript" src="static/js/order.js"></script>
+</html>

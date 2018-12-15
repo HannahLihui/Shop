@@ -50,7 +50,7 @@
                        <td>${sk.startTime}</td> 
                        <td>${sk.endTime}</td> 
                        <td>${sk.createTIme}</td> 
-                       <td><a class="btn btn-info" href="${sk.seckillId}/detail" target="_blank">详情</a></td>
+                       <td><a class="btn btn-info" href="${sk.seckillId}/detail.do" target="_blank">详情</a></td>
                  </tr>
                 </c:forEach>
                     

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="static/element-ui/lib/theme-chalk/index.css"/>
+    <link rel="stylesheet" href="static/font/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="static/css/index.css"/>
+    
+</head>
+<body>
+<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+
+<div id="app">
+    <!-- header -->
+    <el-menu mode="horizontal" :default-active="activeIndex">
+        <el-menu-item index="0" id="logo">购物商城</el-menu-item>
+        <el-menu-item index="1"><a href="index.html">首页</a></el-menu-item>
+        <el-menu-item index="2"><a href="goods.html" id="role">商品管理</a></el-menu-item>
+         <el-menu-item id="author" index="4" >
+            <img class="el-tooltip" src="/static/image/menu.png"/>
+            <el-dropdown>
+               <span class="el-dropdown-link">我的订单<i class="el-icon-arrow-down el-icon--right"></i></span>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item>首页</el-dropdown-item>
+                    <el-dropdown-item>
+                    <el-button @click="recentOrder"></el-button>
+                      <el-popover placement="right" width="400" trigger="click">
+   								<el-table :data="order">
+    <el-table-column width="150" property="itemtitle" label="商品"></el-table-column>
+    <el-table-column width="100" property="address" label="地址"></el-table-column>
+    <el-table-column width="100" property="phone" label="电话"></el-table-column>
+      <el-table-column width="100" property="price" label="价格"></el-table-column>
+   								</el-table>
+  						<label slot="reference">最新订单</label>
+					</el-popover>
+                    </el-dropdown-item>
+                    <el-dropdown-item><a href="#" target="_blank">历史订单</a></el-dropdown-item>
+                    <el-dropdown-item divided><a href="/logout">退出</a></el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+        </el-menu-item>
+        <el-menu-item index="3"><a href="/list.do" >进入秒杀系统</a><el-menu-item>
+     
+    </el-menu>
+
+    <!-- search -->
+    <div style="margin-top: 50px;">
+        <el-row :gutter="20">
+            <el-col :span="6" :offset="9">
+                <el-input placeholder="请输入内容" type="text" class="input-with-select" @keyup.enter.native="search" v-model="searchMap.keywords">
+                    <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+                </el-input>
+            </el-col>
+        </el-row>
+
+        <!-- search-sort -->
+        <div class="sort">
+            <el-row :gutter="20">
+                <el-col :span="20" :offset="2">
+                    <el-card class="box-card">
+                        <div class="waring">
+                            <div>
+                                <el-form label-width="80px">
+                                    <el-form-item label="分类:">
+                                        <div>
+                                            <el-checkbox-group :max="1" v-model="change.category" @change="selectMethod">
+                                                <el-checkbox v-for="classify in classifyData.category" :label="classify" border size="mini">{{classify}}</el-checkbox>
+                                            </el-checkbox-group>
+                                        </div>
+                                    </el-form-item>
+           
+                                    <el-form-item label="价格:">
+                                        <div>
+                                            <el-checkbox-group v-model="change.price" :max="1" @change="selectMethod">
+                                                <el-checkbox :label="'0-500'" border size="mini">0-500元</el-checkbox>
+                                                <el-checkbox :label="'500-1000'" border size="mini">500-1000元</el-checkbox>
+                                                <el-checkbox :label="'1000-2000'" border size="mini">1000-2000元</el-checkbox>
+                                                <el-checkbox :label="'2000-3000'" border size="mini">2000-3000元</el-checkbox>
+                                                <el-checkbox :label="'3000-*'" border size="mini">3000元以上</el-checkbox>
+                                            </el-checkbox-group>
+                                        </div>
+                                    </el-form-item>
+                                    <el-form-item label="综合排序:">
+                                        <div>
+                                            <el-radio-group v-model="searchMap.sort" @change="selectMethod">
+                                                <el-radio :label="'asc'" border size="mini">价格↑</el-radio>
+                                                <el-radio :label="'desc'" border size="mini">价格↓</el-radio>
+                                            </el-radio-group>
+                                        </div>
+                                    </el-form-item>
+                                </el-form>
+                            </div>
+                        </div>
+                    </el-card>
+                </el-col>
+            </el-row>
+        </div>
+    </div>
+
+    <!-- main -->
+    <div id="main">
+        <el-row :gutter="10">
+            <el-col :span="22" :offset="1">
+                <el-container>
+                    <div>
+                        <div class="show" v-for="item in goods">
+                            <div class="img">
+                               <img :src="item.image"/>
+                            </div>
+                            <div class="price">
+                                <span id="itemprice">￥ {{item.price}}</span>
+                            </div>
+                             <div class="buy">
+                           <a  :href="'/order.html?id='+item.id+'&itemtitle='+item.title+'&itemprice='+item.price">点击购买</a>
+                             </div>
+                            <div class="title">
+                                <span v-html="item.title"></span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </el-container>
+            </el-col>
+        </el-row>
+    </div>
+
+    <!-- paging -->
+    <div>
+        <el-row :gutter="10">
+            <el-col :span="10" :offset="2">
+                <div class="pagination">
+                    <el-pagination
+                            background
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="pageConf.pageCode"
+                            :page-sizes="pageConf.pageOption"
+                            :page-size="pageConf.pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="pageConf.totalPage">
+                    </el-pagination>
+                </div>
+            </el-col>
+        </el-row>
+    </div>
+
+  
+</div>
+
+</body>
+<script type="text/javascript" src="js/juqery-1.8.3.js"></script>
+<script type="text/javascript">
+
+     window.onload = function () {
+         console.log(window.location.href)//此处会打印出当前页面的href值，为http://localhost:63342/HTML_ExamplePractice/%E5%8D%9A%E5%AE%A2%E5%9B%AD%E6%8F%90%E5%89%8D%E7%BB%83%E4%B9%A0/index2.html#id1，井号后面的为传递的参数，需要进行处理一下
+         //首先要获取当前的href值
+         let url = window.location.href.split('?');
+         console.log(url);//打印出来是一个数组[‘http://localhost:63342/HTML_ExamplePractice/%E5%8D%9A%E5%AE%A2%E5%9B%AD%E6%8F%90%E5%89%8D%E7%BB%83%E4%B9%A0/index2.html’,'id1']  数组的第二个就是我们传递的数据
+         
+ 
+         function goHash(hash) {
+             if( hash == 'role=manager' ){
+                // window.alert(hash);
+            	 $("#role").show()//表示display:none;
+ 
+             }else {
+            	 $("#role").hide();//此处会打印出id2
+             }
+         }
+         goHash(url[1]);
+    	
+    }
+
+</script>
+<script type="text/javascript" src="static/vue/vue.js"></script>
+<script type="text/javascript" src="static/element-ui/lib/index.js"></script>
+<script type="text/javascript" src="static/vue/vue-resource.js"></script>
+
+<script type="text/javascript" src="static/js/index.js"></script>
+</html>
